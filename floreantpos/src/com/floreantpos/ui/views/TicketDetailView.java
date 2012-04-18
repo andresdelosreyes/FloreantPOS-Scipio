@@ -24,10 +24,11 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.main.Application;
-//import com.floreantpos.model.ScipioInfo;
+import com.floreantpos.model.ScipioInfo;
+import com.floreantpos.model.dao.ScipioInfoDAO;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
-//import com.floreantpos.model.dao.ScipioInfoDAO;
+
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
@@ -75,7 +76,7 @@ public class TicketDetailView extends JPanel implements ActionListener {
 
 	private List<Ticket> tickets;
 	//-AE-
-	//private ScipioInfo scipio;
+        private ScipioInfo scipio;
 		
 	/** Creates new form TicketInfoView */
 	public TicketDetailView() {
@@ -266,18 +267,20 @@ public class TicketDetailView extends JPanel implements ActionListener {
 			dialog.open();
 			
 			if ( ! dialog.isCanceled()) {
-                            /*
 				System.out.println("dialog was not cancelled");
+
+
 				scipio = dialog.getScipioInfo();
 				System.out.println("Scipio Info:");
-				System.out.println("TEI: " + scipio.getTEI());
-				System.out.println("PEI: " + scipio.getPEI());
-				System.out.println("PIN: " + scipio.getPIN());
-				
-				ticket = scipio.getTicket();
+				System.out.println("TEI: " + scipio.getTei());
+				System.out.println("PEI: " + scipio.getPei());
+				System.out.println("PIN: " + scipio.getPin());
+                                //pilo
+                                /*
+				ticket = new Ticket(scipio.getTicketId());
 				System.out.println("Ticket ID: " + ticket.getId());
-				
-//				ScipioInfoDAO.getInstance().saveOrUpdate(scipio);
+
+				ScipioInfoDAO.getInstance().saveOrUpdate(scipio);
 				
 				updateModel();
 				TicketDAO.getInstance().saveOrUpdate(ticket);
@@ -286,7 +289,6 @@ public class TicketDetailView extends JPanel implements ActionListener {
 				if(settleTicketView != null) {
 					settleTicketView.updatePaymentView();
 				}
-                                * 
                                 */
 			}
 		} catch (Exception e) {

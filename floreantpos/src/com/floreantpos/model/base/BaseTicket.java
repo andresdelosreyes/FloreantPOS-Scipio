@@ -49,6 +49,8 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_VOIDED = "voided";
 	public static String PROP_TOTAL_AMOUNT = "totalAmount";
 	public static String PROP_PAID_AMOUNT = "paidAmount";
+        
+              
 
 
 	// constructors
@@ -101,6 +103,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.lang.String cardNumber;
 	private java.lang.Boolean taxExempt;
 	private java.lang.Boolean reOpened;
+        private java.lang.Integer ScipioInfoId;
 
 	// many to one
 	private com.floreantpos.model.Shift shift;
@@ -133,6 +136,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public void setId (java.lang.Integer id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
+                this.ScipioInfoId=null;
 	}
 
 
@@ -725,9 +729,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	}
 
 
-
-
-
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof com.floreantpos.model.Ticket)) return false;
@@ -760,4 +761,18 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	}
 
 
+        
+        
+
+        
+        
+        
+        //pilo
+        public void setScipioInfoId(java.lang.Integer p){
+            this.ScipioInfoId=p;
+        }
+        public java.lang.Integer getScipioInfoId(){
+            return this.ScipioInfoId;
+        }        
+        
 }

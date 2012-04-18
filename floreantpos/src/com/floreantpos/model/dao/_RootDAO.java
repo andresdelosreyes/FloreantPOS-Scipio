@@ -35,6 +35,10 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.VoidReason;
+//pilo
+import com.floreantpos.model.ScipioInfo;
+
+
 
 
 
@@ -98,7 +102,11 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(PrinterConfiguration.class);
 		configuration = configuration.addClass(UserPermission.class);
 		configuration = configuration.addClass(UserType.class);
+                //pilo
+                configuration = configuration.addClass(ScipioInfo.class);
 		
+                
+                
 		configuration = configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
 		configuration = configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.ClientDriver");
 		configuration = configuration.setProperty("hibernate.connection.url", ApplicationConfig.getConnectionURL());
@@ -146,6 +154,11 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(PrinterConfiguration.class);
 		configuration = configuration.addClass(UserPermission.class);
 		configuration = configuration.addClass(UserType.class);
+                //pilo
+                configuration = configuration.addClass(ScipioInfo.class);
+                
+                
+                
 		
 		configuration = configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
 		configuration = configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.ClientDriver");

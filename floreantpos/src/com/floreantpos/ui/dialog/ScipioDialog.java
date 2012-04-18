@@ -7,9 +7,11 @@ import javax.swing.text.MaskFormatter;
 
 import com.floreantpos.PosException;
 import com.floreantpos.main.Application;
-//import com.floreantpos.model.ScipioInfo;
+import com.floreantpos.model.ScipioInfo;
+import com.floreantpos.model.dao.ScipioInfoDAO;
 import com.floreantpos.model.Ticket;
-//import com.floreantpos.model.dao.ScipioInfoDAO;
+import com.floreantpos.model.dao.TicketDAO;
+
 
 /**
  *
@@ -18,7 +20,7 @@ import com.floreantpos.model.Ticket;
 public class ScipioDialog extends POSDialog {
 
 	private Ticket ticket;
-	//private ScipioInfo scipio;
+	private ScipioInfo scipio;
 			
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.floreantpos.swing.PosButton btnCancel;
@@ -82,6 +84,11 @@ public class ScipioDialog extends POSDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SCIPIO INFORMATION");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         titlePanel1.setTitle("SCIPIO INFORMATION");
 
@@ -106,7 +113,6 @@ public class ScipioDialog extends POSDialog {
             }
         });
 
-        txtTEI.setText("12345");
         txtTEI.setMaximumSize(new java.awt.Dimension(250, 30));
         txtTEI.setMinimumSize(new java.awt.Dimension(24, 20));
 
@@ -115,7 +121,6 @@ public class ScipioDialog extends POSDialog {
         lblPIN.setMinimumSize(new java.awt.Dimension(16, 16));
         lblPIN.setPreferredSize(new java.awt.Dimension(32, 16));
 
-        txtPIN.setText("1234");
         txtPIN.setMaximumSize(new java.awt.Dimension(250, 30));
         txtPIN.setMinimumSize(new java.awt.Dimension(24, 20));
         txtPIN.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +134,6 @@ public class ScipioDialog extends POSDialog {
         lblPEI.setMinimumSize(new java.awt.Dimension(16, 16));
         lblPEI.setPreferredSize(new java.awt.Dimension(32, 16));
 
-        txtPEI.setText("123456");
         txtPEI.setMaximumSize(new java.awt.Dimension(250, 30));
         txtPEI.setMinimumSize(new java.awt.Dimension(24, 20));
         txtPEI.addActionListener(new java.awt.event.ActionListener() {
@@ -224,21 +228,24 @@ public class ScipioDialog extends POSDialog {
 	private void doOk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkdoOk
 		try {
 			System.out.println("...in ScipioDialog.doOk()");
-			/*
 			if (scipio == null) {
 				System.out.println("scipio is null... creating new ScipioInfo object");
 				scipio = new ScipioInfo();
 			}
 			
 			try {
-				scipio.setTEI(txtTEI.getText());
-				scipio.setPEI(txtPEI.getText());
-				scipio.setPIN(txtPIN.getText());
-				scipio.setTicket(ticket);
-				
-//				ScipioInfoDAO dao = ScipioInfoDAO.getInstance();
-//				dao.createNewSession();
-//				dao.save(scipio);
+				scipio.setTei(Integer.parseInt(txtTEI.getText()));
+				scipio.setPei(Integer.parseInt(txtPEI.getText()));
+				scipio.setPin(Integer.parseInt(txtPIN.getText()));
+				scipio.setTicketId(ticket.getId());
+                                ScipioInfoDAO dao = ScipioInfoDAO.getInstance();
+				dao.createNewSession();
+				dao.saveOrUpdate(scipio);
+                                ticket.setScipioInfoId(scipio.getId());
+                                com.floreantpos.model.dao.TicketDAO tdao = com.floreantpos.model.dao.TicketDAO.getInstance();
+                                tdao.createNewSession();
+                                tdao.saveOrUpdate(ticket);
+                                //tdao.closeSession();
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -248,8 +255,6 @@ public class ScipioDialog extends POSDialog {
 				
 			setCanceled(false);
 			dispose();
-                        * 
-                        */
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, e.getMessage());
 		}
@@ -274,6 +279,30 @@ public class ScipioDialog extends POSDialog {
 		// TODO add your handling code here:
 	}//GEN-LAST:event_txtPEIActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here: pilo
+        try {
+            if (!(ticket == null)){
+                if(!(ticket.getScipioInfoId()==null))
+                {
+                    System.out.println("The ScipioInfo ID is:  " + ticket.getScipioInfoId().toString());
+                    if (ticket.getScipioInfoId()!=0){
+                    ScipioInfoDAO dao = ScipioInfoDAO.getInstance();
+                    dao.createNewSession();
+                    scipio = dao.load(ticket.getScipioInfoId());
+                    this.txtPEI.setText(scipio.getPei().toString());
+                    this.txtPIN.setText(scipio.getPin().toString());
+                    this.txtTEI.setText(scipio.getTei().toString());
+                    dao.closeSession(dao.getSession());                        
+                    }
+                }
+                
+            }
+        } catch (Exception e) {
+            POSMessageDialog.showError(this, e.getMessage());
+        }
+    }//GEN-LAST:event_formWindowOpened
+
 
 	public Ticket getTicket() {
 		return ticket;
@@ -282,10 +311,8 @@ public class ScipioDialog extends POSDialog {
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 	}
-	/*
+
 	public ScipioInfo getScipioInfo() {
 		return scipio;
 	}
-        * 
-        */
 }
